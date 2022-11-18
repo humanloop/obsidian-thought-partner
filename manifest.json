@@ -1,0 +1,10 @@
+{
+  "id": "obsidian-thoughtpartner-plugin",
+  "name": "Thought Partner",
+  "version": "0.0.10",
+  "minAppVersion": "0.12.0",
+  "description": "An AI assistant to help you think and write better",
+  "author": "Raza Habib",
+  "authorUrl": "https://humanloop.com",
+  "isDesktopOnly": false
+}

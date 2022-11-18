@@ -1,0 +1,36 @@
+{
+  "name": "obsidian-thoughtpartner-plugin",
+  "version": "0.0.10",
+  "description": "Thoughtpartner is an AI assitant that helps you get unstuck, critque your ideas and get summaries.",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs & npx tailwindcss -i ./src/styles.css -o ./styles.css --watch",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "version": "node version-bump.mjs && git add manifest.json versions.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.2.0",
+    "@typescript-eslint/parser": "^5.2.0",
+    "builtin-modules": "^3.2.0",
+    "esbuild": "0.13.12",
+    "obsidian": "^0.13.26",
+    "prettier": "2.7.1",
+    "tailwindcss": "^3.2.3",
+    "tslib": "2.3.1",
+    "typescript": "4.4.4"
+  },
+  "dependencies": {
+    "@radix-ui/react-icons": "^1.1.1",
+    "@radix-ui/react-toggle-group": "^1.0.1",
+    "lucide-react": "^0.99.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "request": "^2.88.2"
+  }
+}
