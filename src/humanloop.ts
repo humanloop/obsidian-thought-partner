@@ -11,8 +11,21 @@ export interface FeedbackResponse {
   [any: string]: string;
 }
 
-export const generate = async (body: any): Promise<GenerateResponse> => {
-  console.log("generate", body);
+export const projectGenerate = async (
+  project: string,
+  input: string,
+  num_samples: number,
+  openai_api_key: string
+): Promise<GenerateResponse> => {
+  const body = {
+    project: project,
+    num_samples: num_samples || 1,
+    inputs: { input: input },
+    provider_api_keys: {
+      openai: openai_api_key,
+    },
+  };
+  console.log({ body });
   let response;
   try {
     response = JSON.parse(
@@ -26,6 +39,7 @@ export const generate = async (body: any): Promise<GenerateResponse> => {
         },
       })
     );
+    console.log("response", response);
   } catch (error) {
     console.log(error);
     return Promise.reject(error);
@@ -59,6 +73,44 @@ export const feedback = async (body: {
         },
       })
     );
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error);
+  }
+  return response;
+};
+
+export const generate = async (
+  project: string,
+  inputs: { [key:string]: string },
+  modelConfig: any,
+  num_samples: number,
+  openai_api_key: string
+): Promise<GenerateResponse> => {
+  const body = {
+    project,
+    num_samples: num_samples || 1,
+    inputs,
+    model_config: modelConfig,
+    provider_api_keys: {
+      openai: openai_api_key,
+    },
+  };
+  console.log({ body });
+  let response;
+  try {
+    response = JSON.parse(
+      await request({
+        url: "https://api.humanloop.com/v2/generate",
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-KEY": API_KEY,
+        },
+      })
+    );
+    console.log("response", response);
   } catch (error) {
     console.log(error);
     return Promise.reject(error);

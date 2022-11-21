@@ -590,6 +590,10 @@ video {
   line-height: 2;
 }
 
+.\[key\:string\] {
+  key: string;
+}
+
 .ToggleGroup {
   display: inline-flex;
   background-color: blue;

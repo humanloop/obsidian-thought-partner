@@ -1,5 +1,5 @@
 import { addIcon, Editor, Events, MarkdownView, Notice, Plugin } from "obsidian";
-import { generate, GenerateResponse } from "./humanloop";
+import { generate, GenerateResponse, projectGenerate } from "./humanloop";
 import { ThoughtPartnerSettingTab } from "./settings";
 import "./styles.css";
 import { SidePane, SIDE_PANE_VIEW_TYPE } from "./view";
@@ -65,42 +65,6 @@ export default class ThoughtPartnerPlugin extends Plugin {
       }
     }
     editor.replaceRange(text, cursor);
-  }
-
-  /*
-	Prepare the request parameters
-	*/
-  prepareParameters(
-    editor: Editor,
-    settings: ThoughtPartnerSettings,
-    project_name: string = "Extend",
-    num_samples: number = 1
-  ) {
-    let bodyParams: any = {
-      project: project_name,
-      max_tokens: settings.max_tokens,
-      num_samples: num_samples,
-      inputs: { input: this.getContext(editor) },
-      provider_api_keys: {
-        OpenAI: settings.openai_api_key,
-      },
-    };
-    console.log(bodyParams);
-    return bodyParams;
-  }
-
-  async getGeneration(
-    editor: Editor,
-    settings: ThoughtPartnerSettings,
-    project_name: string,
-    num_samples: number = 1
-  ): Promise<GenerateResponse> {
-    const parameters = this.prepareParameters(editor, settings, project_name);
-    try {
-      return await generate(parameters);
-    } catch (error) {
-      return Promise.reject(error);
-    }
   }
 
   // Returns the selection, or
@@ -262,11 +226,18 @@ export default class ThoughtPartnerPlugin extends Plugin {
     this.updateStatusBar(`writing... `);
     try {
       new Notice("Generating...");
-      const response = await this.getGeneration(editor, this.settings, "Extend");
+      const response = await projectGenerate(
+        "Extend",
+        this.getContext(editor),
+        1,
+        this.settings.openai_api_key
+      );
       window.dispatchEvent(new CustomEvent(GenerationEvents.Extend, { detail: response }));
       this.insertGeneratedText(response.data[0]?.raw_output, editor);
       this.updateStatusBar(``);
     } catch (error) {
+      console.log(error);
+      console.log(error.response);
       new Notice("Thought Partner: Error check console CTRL+SHIFT+I");
       this.updateStatusBar(`Error check console`);
       setTimeout(() => this.updateStatusBar(``), 3000);
@@ -276,7 +247,12 @@ export default class ThoughtPartnerPlugin extends Plugin {
     this.updateStatusBar(`Summarising... `);
     try {
       new Notice("Summarising...");
-      const response = await this.getGeneration(editor, this.settings, "summarise");
+      const response = await projectGenerate(
+        "summarise",
+        this.getContext(editor),
+        1,
+        this.settings.openai_api_key
+      );
       window.dispatchEvent(new CustomEvent(GenerationEvents.Summarize, { detail: response }));
       this.insertGeneratedText(response.data[0]?.raw_output, editor, "top");
       this.updateStatusBar(``);
@@ -291,7 +267,20 @@ export default class ThoughtPartnerPlugin extends Plugin {
     this.updateStatusBar(`Prose-ifying... `);
     try {
       new Notice("Converting into fluid prose...");
-      const response = await this.getGeneration(editor, this.settings, "proseify");
+      const response = await generate(
+        "proseify",
+        { input: this.getContext(editor) },
+        {
+          model: "text-davinci-002",
+          max_tokens: 100,
+          temperature: 0.7,
+          prompt_template: `As senior editor at the Financial Times. Rephrase the following notes to be a clear, assertive prose for an article.
+
+          {{input}}`,
+        },
+        1,
+        this.settings.openai_api_key
+      );
       window.dispatchEvent(new CustomEvent(GenerationEvents.Proseify, { detail: response }));
       this.insertGeneratedText(response.data[0]?.raw_output, editor, "bottom");
       this.updateStatusBar(``);
@@ -307,7 +296,12 @@ export default class ThoughtPartnerPlugin extends Plugin {
     try {
       new Notice("Hmmm... thinking...");
       this.makeSureViewIsOpen();
-      const response = await this.getGeneration(editor, this.settings, "critique");
+      const response = await projectGenerate(
+        "critique",
+        this.getContext(editor),
+        1,
+        this.settings.openai_api_key
+      );
       window.dispatchEvent(new CustomEvent(GenerationEvents.Critique, { detail: response }));
       this.updateStatusBar(``);
     } catch (error) {
@@ -321,7 +315,12 @@ export default class ThoughtPartnerPlugin extends Plugin {
     try {
       new Notice("Hmmm... thinking...");
       this.makeSureViewIsOpen();
-      const response = await this.getGeneration(editor, this.settings, "suggestions");
+      const response = await projectGenerate(
+        "suggestions",
+        this.getContext(editor),
+        1,
+        this.settings.openai_api_key
+      );
       window.dispatchEvent(new CustomEvent(GenerationEvents.Suggest, { detail: response }));
       this.updateStatusBar(``);
     } catch (error) {
