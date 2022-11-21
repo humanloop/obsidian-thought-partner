@@ -14,7 +14,7 @@ It's aim is to not just be an easy way to generate text, but to help you think t
 
 Download the zip of this repo and unzip it into your vault's `<vault>/.obsidian/plugins/` folder, then reload Obsidian.
 
-Note: the .obsidian folder may be hidden. O n MacOS you should be able to press `Command+Shift+Dot` to show the folder in Finder.
+Note: the .obsidian folder may be hidden. On MacOS you should be able to press `Command+Shift+Dot` to show the folder in Finder. You may need to enable 'Community Plugins' and to create the `plugins` folder if it doesn't exist.
 
 ## 2. Bring your own OpenAI key
 
@@ -24,9 +24,7 @@ Thought Partner uses GPT-3. It's free software, you'll just pay (the very reason
 
 2. Grab your API key from [https://beta.openai.com/account/api-keys](https://beta.openai.com/account/api-keys)
 
-3. Paste your API key into the plugin settings
-
-After installing and enabling the ThoughtPartner plugin, go to the settings in Obsidian and add your API key in settings.
+3. Enable ThoughtPartner in 'Community plugins' and paste your API key into the settings.
 
 <p align="center">
   <img height="174" width="590" src="./images/settings.png">

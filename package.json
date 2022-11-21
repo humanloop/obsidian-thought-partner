@@ -1,7 +1,7 @@
 {
   "name": "obsidian-thoughtpartner-plugin",
   "version": "0.0.10",
-  "description": "Thoughtpartner is an AI assitant that helps you get unstuck, critque your ideas and get summaries.",
+  "description": "An AI assistant to help you think and write better",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs & npx tailwindcss -i ./src/styles.css -o ./styles.css --watch",
