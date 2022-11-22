@@ -63,4 +63,4 @@ _ThoughtPartner will sympathetically evaluate your writing and suggest where the
 
 # Terms and policy
 
-Your requests and responses will go via Humanloop to OpenAI's API. See the OpenAI [terms](https://openai.com/api/policies/terms/) to understand how that data will gets used.
+Your requests and responses are logged by OpenAI (under your API key) and Humanloop (anonymously). You can read more about this in the [OpenAI terms of service](https://beta.openai.com/terms).
