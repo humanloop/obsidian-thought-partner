@@ -56,7 +56,7 @@ export const ResponseArea = () => {
     <div className="">
       <div className="my-2">
         {activeMode === null && "Call Thought Partner to see results here."}
-        {activeMode === GenerationEvents.Suggest && "Suggstions"}
+        {activeMode === GenerationEvents.Suggest && "Suggestions"}
         {activeMode === GenerationEvents.Extend && "Extend"}
         {activeMode === GenerationEvents.Summarize && "Summary"}
         {activeMode === GenerationEvents.Critique && "Critique"}
